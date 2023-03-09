@@ -1,0 +1,41 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+ 
+metadata:
+  name: skills-cluster
+  region: ap-northeast-2
+  version: "1.24"
+ 
+vpc:
+  subnets:
+    private:
+      ap-northeast-2a: { id: subnet-0f4c36a790e117def }
+      ap-northeast-2c: { id: subnet-0c6fa03923f8dcd2b }
+    
+managedNodeGroups:
+  - name: blue
+    instanceType: t3.small
+    instanceName: eks-blue
+    volumeSize: 20
+    ssh:
+      allow: true
+      publicKeyName: eks-key
+      sourceSecurityGroupIds: [ "sg-00ddc5991c1ab6825" ]
+    minSize: 2
+    desiredCapacity: 2
+    maxSize: 3
+    labels: { type: blue }
+    privateNetworking: true
+  - name: green
+    instanceType: t3.small
+    instanceName: eks-green
+    volumeSize: 20
+    ssh:
+      allow: true
+      publicKeyName: eks-key
+      sourceSecurityGroupIds: [ "sg-00ddc5991c1ab6825" ]
+    minSize: 2
+    desiredCapacity: 2
+    maxSize: 3
+    labels: { type: green }
+    privateNetworking: true
